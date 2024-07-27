@@ -66,7 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                             const ArzTitleWidget(),
-                            ArzList()
+                            ...[
+                              state.arzList.fold((l) {
+                                return SliverToBoxAdapter();
+                              }, (r) {
+                                return ArzList(r);
+                              })
+                            ]
                           ],
                         ),
                       ),
@@ -96,10 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-
 class ArzList extends StatelessWidget {
-   ArzList({
+  List<Arz> arzList;
+  ArzList(
+    this.arzList, {
     super.key,
   });
 
@@ -150,7 +156,7 @@ class ArzList extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '',
+                        arzList[0].current,
                         style: TextStyle(
                             color: CustomColors.backgroundScreenColor),
                       ),

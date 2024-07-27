@@ -4,11 +4,13 @@ import 'package:rizino/Constants/colors.dart';
 import 'package:rizino/Screens/HomeScreen.dart';
 import 'package:rizino/bloc/Home/Home_Bloc.dart';
 import 'package:rizino/di/di.dart';
+import 'package:rizino/di/dio-Arz-Api.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await getItInit();
+  await getItInit2();
 
   runApp(const Rizino());
 }
