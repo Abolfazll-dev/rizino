@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rizino/Constants/colors.dart';
+import 'package:rizino/Screens/DashboardScreen.dart';
 import 'package:rizino/Screens/HomeScreen.dart';
 import 'package:rizino/bloc/Home/Home_Bloc.dart';
 import 'package:rizino/di/di.dart';
-import 'package:rizino/di/dio-Arz-Api.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await getItInit();
-  await getItInit2();
 
   runApp(const Rizino());
 }
@@ -23,10 +22,11 @@ class Rizino extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
           fontFamily: 'irm',
-          scaffoldBackgroundColor: CustomColors.backgroundScreenColor,
+          scaffoldBackgroundColor: const Color.fromARGB(255, 0, 5, 62),
           appBarTheme: AppBarTheme(color: CustomColors.backgroundScreenColor)),
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(create: (context)=>HomeBloc(),child: HomeScreen(),)
+      home: DashboardScreen()
+      // BlocProvider(create: (context)=>HomeBloc(),child: HomeScreen(),)
     );
   }
 }
