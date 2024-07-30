@@ -24,6 +24,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var carList = [
+    {'name': 'ایران خودرو', 'image': 'assets/images/1.png'},
+    {'name': 'سایپا', 'image': 'assets/images/2.png'},
+    {'name': 'کرمان موتور', 'image': 'assets/images/3.png'},
+    {'name': 'مدیران خودرو', 'image': 'assets/images/4.png'},
+    {'name': 'کیا', 'image': 'assets/images/5.png'},
+    {'name': 'آمیکو', 'image': 'assets/images/6.png'},
+    {'name': 'هایما', 'image': 'assets/images/7.png'},
+    {'name': 'بی ام و', 'image': 'assets/images/8.png'},
+    {'name': 'مرسدس بنز', 'image': 'assets/images/9.png'},
+    {'name': 'پورشه', 'image': 'assets/images/10.png'},
+    {'name': 'سیتروئن', 'image': 'assets/images/11.png'},
+    {'name': 'فردا موتورز', 'image': 'assets/images/12.png'},
+    {'name': 'فونیکس', 'image': 'assets/images/13.png'},
+    {'name': 'دانگ فنگ', 'image': 'assets/images/14.png'},
+    {'name': 'بهمن موتورز', 'image': 'assets/images/15.png'},
+    {'name': 'هیوندای', 'image': 'assets/images/16.png'},
+    {'name': 'رنو', 'image': 'assets/images/17.png'},
+    {'name': 'سانگ یانگ', 'image': 'assets/images/18.png'},
+    {'name': 'اس دبلیو ام', 'image': 'assets/images/19.png'},
+    {'name': 'جک', 'image': 'assets/images/20.png'},
+    {'name': 'لاماری', 'image': 'assets/images/21.png'},
+    {'name': 'تویوتا', 'image': 'assets/images/22.png'},
+    {'name': 'لکسوس', 'image': 'assets/images/23.png'},
+    {'name': 'فولکس', 'image': 'assets/images/24.png'},
+    {'name': 'میتسوبیشی', 'image': 'assets/images/25.png'},
+    {'name': 'دایون', 'image': 'assets/images/26.png'},
+    {'name': 'لیفان', 'image': 'assets/images/27.png'},
+    {'name': 'فورد', 'image': 'assets/images/28.png'},
+    {'name': 'شورلت', 'image': 'assets/images/29.png'},
+  ];
   var jsonList;
   var jsonListGold;
 
@@ -44,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           jsonList = response.data['data']['prices'];
         });
-        print(response.data);
       } else {
         print(response.statusCode);
       }
@@ -61,7 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           jsonListGold = response.data['data']['prices'];
         });
-        print(response.data);
       } else {
         print(response.statusCode);
       }
@@ -133,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ArzTitleWidget('قیمت خودرو ها'),
                         SliverPadding(
                           padding: const EdgeInsets.only(
-                              left: 44, right: 44, bottom: 35),
+                              left: 44, right: 44, bottom: 20),
                           sliver: SliverGrid(
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -146,14 +175,51 @@ class _HomeScreenState extends State<HomeScreen> {
                               (BuildContext context, int index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  color: Colors.teal[100 * (index % 9)],
-                                  child: Text('grid item $index'),
+                                  decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          158, 129, 184, 255),
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          width: 50,
+                                          height: 50,
+                                          child: Image.asset(
+                                            color: Colors.black,
+                                            '${carList[index]['image']}',
+                                          )),
+                                      Text('${carList[index]['name']}'),
+                                    ],
+                                  ),
                                 );
                               },
-                              childCount: 30,
+                              childCount: 4,
                             ),
                           ),
-                        )
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 0, bottom: 20, right: 44, left: 44),
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(
+                                      width: 1, color: CustomColors.blue),
+                                  minimumSize: const Size(double.infinity, 50)),
+                              child: const Text(
+                                'مشاهده بیشتر',
+                                style: TextStyle(color: CustomColors.blue),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ArzTitleWidget('محاسبه هزینه ساخت مسکن'),
+                        SliverPadding(padding: EdgeInsets.fromLTRB(44, 0, 44, 35),sliver: SliverToBoxAdapter(
+                          child: ClipRRect(borderRadius: BorderRadius.circular(20),child: Image.asset('assets/images/hazine.jpg')),
+                        ),)
                       ],
                     ),
                   ),
