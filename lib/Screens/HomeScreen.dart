@@ -6,12 +6,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:rizino/Constants/colors.dart';
+import 'package:rizino/Screens/Links/ArzPriceScreen.dart';
+import 'package:rizino/Screens/Links/CarListScreen.dart';
+import 'package:rizino/Screens/Links/GoldPriceScreen.dart';
+import 'package:rizino/Screens/Links/Hazine.dart';
+import 'package:rizino/bloc/Car/Car_Bloc.dart';
 import 'package:rizino/bloc/Home/Home_Bloc.dart';
 import 'package:rizino/bloc/Home/Home_Event.dart';
 import 'package:rizino/bloc/Home/Home_State.dart';
 import 'package:rizino/data/Model/Ads.dart';
 import 'package:rizino/data/Model/Arz.dart';
 import 'package:rizino/data/Model/Banner.dart';
+import 'package:rizino/data/Model/Car.dart';
 import 'package:rizino/widgets/Cached_image.dart';
 
 import 'package:persian_number_utility/persian_number_utility.dart';
@@ -160,45 +166,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                         ],
                         ArzTitleWidget('قیمت خودرو ها'),
-                        SliverPadding(
-                          padding: const EdgeInsets.only(
-                              left: 44, right: 44, bottom: 20),
-                          sliver: SliverGrid(
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 200.0,
-                              mainAxisSpacing: 10.0,
-                              crossAxisSpacing: 10.0,
-                              childAspectRatio: 1.0,
-                            ),
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          158, 129, 184, 255),
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          width: 50,
-                                          height: 50,
-                                          child: Image.asset(
-                                            color: Colors.black,
-                                            '${carList[index]['image']}',
-                                          )),
-                                      Text('${carList[index]['name']}'),
-                                    ],
-                                  ),
-                                );
-                              },
-                              childCount: 4,
-                            ),
-                          ),
-                        ),
+                        ...[
+                          state.carList.fold((l) {
+                            return SliverToBoxAdapter(
+                              child: Text('lklk'),
+                            );
+                          }, (r) {
+                            return CarList(carList: carList,r);
+                          })
+                        ],
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: const EdgeInsets.only(
@@ -217,9 +193,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         ArzTitleWidget('محاسبه هزینه ساخت مسکن'),
-                        SliverPadding(padding: EdgeInsets.fromLTRB(44, 0, 44, 35),sliver: SliverToBoxAdapter(
-                          child: ClipRRect(borderRadius: BorderRadius.circular(20),child: Image.asset('assets/images/hazine.jpg')),
-                        ),)
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(44, 0, 44, 35),
+                          sliver: SliverToBoxAdapter(
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => Hazine(),
+                                      ));
+                                    },
+                                    child: Image.asset(
+                                        'assets/images/hazine.jpg'))),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -246,6 +235,69 @@ class _HomeScreenState extends State<HomeScreen> {
             colors: [CustomColors.blue],
             strokeWidth: 2,
             pathBackgroundColor: Colors.black),
+      ),
+    );
+  }
+}
+
+class CarList extends StatelessWidget {
+  List<Car> carDataList;
+  CarList(
+    this.carDataList, {
+    super.key,
+    required this.carList,
+  });
+
+  final List<Map<String, String>> carList;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.only(left: 44, right: 44, bottom: 20),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200.0,
+          mainAxisSpacing: 10.0,
+          crossAxisSpacing: 10.0,
+          childAspectRatio: 1.0,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => CarBloc(),
+                      child: CarListScreen(carDataList),
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(158, 129, 184, 255),
+                    borderRadius: BorderRadius.circular(15)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        width: 50,
+                        height: 50,
+                        child: Image.asset(
+                          color: Colors.black,
+                          '${carList[index]['image']}',
+                        )),
+                    Text('${carList[index]['name']}'),
+                  ],
+                ),
+              ),
+            );
+          },
+          childCount: 4,
+        ),
       ),
     );
   }
@@ -354,12 +406,12 @@ class GoldPriceList extends StatelessWidget {
                     height: 30,
                   ),
                 ),
-                const Text('طلای 18 عیار'),
+                const Text('طلای 24 عیار'),
                 const Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Text(
-                    '${goldJson['geram18']['current']}'
+                    '${goldJson['geram24']['current']}'
                         .seRagham()
                         .toPersianDigit(),
                     style: const TextStyle(fontSize: 15),
@@ -395,12 +447,12 @@ class GoldPriceList extends StatelessWidget {
                     height: 30,
                   ),
                 ),
-                const Text('طلای 18 عیار'),
+                const Text('مثقال طلا'),
                 const Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Text(
-                    '${goldJson['geram18']['current']}'
+                    '${goldJson['mesghal']['current']}'
                         .seRagham()
                         .toPersianDigit(),
                     style: const TextStyle(fontSize: 15),
@@ -417,7 +469,11 @@ class GoldPriceList extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 0, bottom: 20, right: 44, left: 44),
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => GoldPriceScreen(),
+                ));
+              },
               style: OutlinedButton.styleFrom(
                   side: const BorderSide(width: 1, color: CustomColors.blue),
                   minimumSize: const Size(double.infinity, 50)),
@@ -583,7 +639,13 @@ class ArzList extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 20),
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                        create: (context) => HomeBloc(),
+                        child: ArzPriceScreen()),
+                  ));
+                },
                 style: OutlinedButton.styleFrom(
                     side: const BorderSide(width: 1, color: CustomColors.blue),
                     minimumSize: const Size(double.infinity, 50)),
@@ -741,75 +803,90 @@ class CategoryWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Column(
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: CustomColors.blue),
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    margin: const EdgeInsets.all(1),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => GoldPriceScreen(),
+                ));
+              },
+              child: Column(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
-                        color: CustomColors.backgroundScreenColor,
-                        borderRadius: BorderRadius.circular(100)),
-                    child: Container(
-                      margin: const EdgeInsets.all(2),
-                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: CachedImge(
-                          imageUrl: banners[1].image,
+                        color: CustomColors.blue),
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      margin: const EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                          color: CustomColors.backgroundScreenColor,
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Container(
+                        margin: const EdgeInsets.all(2),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedImge(
+                            imageUrl: banners[1].image,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Text(
-                  'قیمت طلا',
-                  style: TextStyle(fontSize: 9),
-                ),
-              ],
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Text(
+                    'قیمت طلا',
+                    style: TextStyle(fontSize: 9),
+                  ),
+                ],
+              ),
             ),
-            Column(
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: CustomColors.blue),
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    margin: const EdgeInsets.all(1),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                      create: (context) => HomeBloc(), child: ArzPriceScreen()),
+                ));
+              },
+              child: Column(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
-                        color: CustomColors.backgroundScreenColor,
-                        borderRadius: BorderRadius.circular(100)),
-                    child: Container(
-                      margin: const EdgeInsets.all(2),
-                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: CachedImge(
-                          imageUrl: banners[0].image,
+                        color: CustomColors.blue),
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      margin: const EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                          color: CustomColors.backgroundScreenColor,
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Container(
+                        margin: const EdgeInsets.all(2),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedImge(
+                            imageUrl: banners[0].image,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Text(
-                  'قیمت ارز ها',
-                  style: TextStyle(fontSize: 9),
-                ),
-              ],
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Text(
+                    'قیمت ارز ها',
+                    style: TextStyle(fontSize: 9),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

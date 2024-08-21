@@ -8,7 +8,7 @@ class CategoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Text('test'),
+        child: Text('s'),
       ),
     );
   }

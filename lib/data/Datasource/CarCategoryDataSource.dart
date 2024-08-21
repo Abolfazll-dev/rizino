@@ -1,25 +1,25 @@
 
 import 'package:dio/dio.dart';
-import 'package:rizino/data/Model/Arz.dart';
 import 'package:rizino/data/Model/Banner.dart';
+import 'package:rizino/data/Model/CarCategory.dart';
 import 'package:rizino/di/di.dart';
 import 'package:rizino/utils/api_exception.dart';
 
 
 
-abstract class IArzDataSource {
-  Future<List<Arz>> GetArzs();
+abstract class ICarCategoryDataSource {
+  Future<List<CarCategory>> GetCategory();
 }
 
-class ArzRemoteDataSource extends IArzDataSource {
+class CarCategoryRemoteDataSource extends ICarCategoryDataSource {
   final Dio _dio = locator.get();
   @override
-  Future<List<Arz>> GetArzs() async {
+  Future<List<CarCategory>> GetCategory() async {
     try {
-      var response = await _dio.get('collections/cedarPrices/records');
+      var response = await _dio.get('collections/Category/records');
       return response.data['items']
-          .map<Arz>(
-              (jsonObject) => Arz.fromMapJson(jsonObject))
+          .map<CarCategory>(
+              (jsonObject) => CarCategory.fromMapJson(jsonObject))
           .toList();
     } on DioError catch (ex) {
       throw ApiException(ex.response?.statusCode, ex.response?.data['message']);

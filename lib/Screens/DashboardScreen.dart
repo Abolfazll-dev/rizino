@@ -10,6 +10,7 @@ import 'package:rizino/Screens/CalculatorScreen.dart';
 import 'package:rizino/Screens/CategoryScreen.dart';
 import 'package:rizino/Screens/HomeScreen.dart';
 import 'package:rizino/Screens/ProfileScreen.dart';
+import 'package:rizino/Screens/test.dart';
 import 'package:rizino/bloc/Home/Home_Bloc.dart';
 import 'package:rizino/widgets/slider.dart';
 
@@ -22,7 +23,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin {
-  int _getIndexNumber = 3;
+  int _getIndexNumber = 2;
   late AnimationController _animationController;
   late Animation<double> animation;
   late Animation<double> scaleAnimation;
@@ -103,34 +104,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 showUnselectedLabels: false,
                 showSelectedLabels: false,
                 items: [
-                  BottomNavigationBarItem(
-                      icon: Padding(
-                        padding: const EdgeInsets.only(left: 80),
-                        child:
-                            SvgPicture.asset('assets/images/ProfileScreen.svg'),
-                      ),
-                      activeIcon: Padding(
-                        padding: const EdgeInsets.only(left: 80),
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/images/ProfileScreen.svg',
-                              color: CustomColors.blue,
-                            ),
-                            const SizedBox(
-                              height: 3,
-                            ),
-                            Container(
-                              width: 5,
-                              height: 5,
-                              decoration: BoxDecoration(
-                                  color: CustomColors.blue,
-                                  borderRadius: BorderRadius.circular(40)),
-                            )
-                          ],
-                        ),
-                      ),
-                      label: 'تنظیمات'),
+                 
                   BottomNavigationBarItem(
                       icon: Padding(
                         padding: const EdgeInsets.only(left: 30),
@@ -224,13 +198,10 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   List<Widget> screenIndex() {
     return [
+      
       const Directionality(
         textDirection: TextDirection.rtl,
-        child: ProfileScreen(),
-      ),
-      const Directionality(
-        textDirection: TextDirection.rtl,
-        child: CalculatorScreen(),
+        child: CalculatorApplication(),
       ),
       Directionality(
         textDirection: TextDirection.rtl,

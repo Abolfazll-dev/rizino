@@ -1,21 +1,21 @@
 class Arz {
-  String min;
-  String max;
-  String current;
+  String name;
+  String image;
+
 
 
   Arz(
-    this.min,
-    this.max,
-    this.current,
+    this.name,
+    this.image,
+
 
   );
 
   factory Arz.fromMapJson(Map<String, dynamic> jsonMapObject) {
     return Arz(
-      jsonMapObject['min'],
-      jsonMapObject['max'],
-      jsonMapObject['current'],
+      jsonMapObject['name'],
+      'https://rizinoo.chbk.run/api/files/cedarPrices/${jsonMapObject['id']}/${jsonMapObject['image']}',
+
 
     );
   }
